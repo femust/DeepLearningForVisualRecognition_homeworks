@@ -73,9 +73,39 @@ where the term $P(X|\theta) = P(X)$ since the observations are independent on $\
 \end{array}
 \end{equation}
 
+\section{Derivatives and the chain rule}
+\begin{equation}
+f_{W,b}(x_i) = \sigma(W^Tx_i + b)
+\end{equation}
+\begin{equation}
+t = W^Tx_i
+\end{equation}
+\begin{equation}
+\sigma(t) = \frac{1}{1+\exp^{-t}}
+\end{equation}
+\begin{equation}
+\frac{\partial{f}}{\partial{t}} = \frac{\partial{\sigma}}{\partial{t}} = \frac{e^{-t}}{(1+e^-t)^2} = \sigma(T)(1-\sigma(t))
+\end{equation}
 
+\begin{equation}
+\frac{\partial{L}}{\partial{W_j}} = \frac{\partial{L}}{\partial{f}}\frac{\partial{f}}{\partial{t}}\frac{\partial{t}}{\partial{W_j}} = 2\sum_{i=1}^N (y_i - f_i)(-1)(f_i)(1-f_i)(x_{ij})
+\end{equation}
 
-
+\begin{equation}
+\frac{\partial{L}}{\partial{b}} = \frac{\partial{L}}{\partial{f}}\frac{\partial{f}}{\partial{t}}\frac{\partial{t}}{\partial{b}} = 2\sum_{i=1}^N (y_i - f_i)(-1)(f_i)(1-f_i)(1)
+\end{equation}
+Can be constructed from partial derivatives above
+\begin{equation}
+\nabla_WL = [\frac{\partial{L}}{\partial{W_1}} \dots \frac{\partial{L}}{\partial{W_d}}]^T
+\end{equation}
+for weight to get to the local minimum
+\begin{equation}
+W \leftarrow W - \alpha \nabla_W L
+\end{equation}
+similar for bias 
+\begin{equation}
+b \leftarrow b - \alpha \nabla_b L
+\end{equation}
 \end{document}
 
 
