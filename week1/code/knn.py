@@ -136,8 +136,8 @@ if __name__ == '__main__':
     knn_classifier.plot(plot_test)
     knn_classifier.k = 5
     knn_classifier.plot(plot_test)
-    plot_test = test_imgs[:10, :, :]
-    plot_test_labels = test_labels[:10]
+    plot_test = test_imgs[:100, :, :]
+    plot_test_labels = test_labels[:100]
     knn_classifier.plot_confusion_matrix(plot_test, plot_test_labels)
 
     ##### TASK a.3 #####
