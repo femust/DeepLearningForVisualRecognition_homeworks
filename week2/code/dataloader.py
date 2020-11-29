@@ -3,10 +3,12 @@ from load_mnist import load_mnist
 
 
 class Dataset:
-    def __init__(self, path, dataset):
-        imgs, self.labels = load_mnist(dataset=dataset, path=path)
+    def __init__(self, path, dataset, classes):
+        imgs, labels = load_mnist(dataset=dataset, path=path)
         self.imgs = imgs.reshape(list(imgs.shape)[0], -1)
-        self.imgs, self.labels = self.dataFilter([0, 1])
+        self.labels = labels.type(torch.LongTensor)
+        print(self.labels)
+        self.imgs, self.labels = self.dataFilter(classes)
         self.mean = self.getMean()
         self.std = self.getStd()
 
@@ -33,21 +35,9 @@ class Dataset:
         std = torch.std(self.imgs)
         return std
 
-    def dataFilter(self, valid_labels):
-        id = torch.where((self.labels == valid_labels[0])
-                         | (self.labels == valid_labels[1]))[0]
+    def dataFilter(self, classes):
+        id = torch.tensor([], dtype=torch.long)
+        for class_ in classes:
+            idc = torch.where(self.labels == class_)[0]
+            id = torch.cat((id, idc))
         return self.imgs[id, :], self.labels[id]
-
-
-if __name__ == "__main__":
-
-    dataset_path = "dataset"
-
-    train_dataset = Dataset(dataset_path, "training")
-    dataloader = torch.utils.data.DataLoader(train_dataset,
-                                             batch_size=48,
-                                             shuffle=True,
-                                             drop_last=False)
-
-    for img, label in dataloader:
-        print(img.size(), label.shape)
