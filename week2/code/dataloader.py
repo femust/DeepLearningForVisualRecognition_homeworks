@@ -3,11 +3,11 @@ from load_mnist import load_mnist
 
 
 class Dataset:
-    def __init__(self, path, dataset, classes):
-        imgs, labels = load_mnist(dataset=dataset, path=path)
+    def __init__(self, path, dataset, classes, imgs=None, labels=None):
+        if (path):
+            imgs, labels = load_mnist(dataset=dataset, path=path)
         self.imgs = imgs.reshape(list(imgs.shape)[0], -1)
         self.labels = labels.type(torch.LongTensor)
-        print(self.labels)
         self.imgs, self.labels = self.dataFilter(classes)
         self.mean = self.getMean()
         self.std = self.getStd()
