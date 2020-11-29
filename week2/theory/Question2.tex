@@ -34,54 +34,66 @@ We apply the softmax function as activation -\\
 \begin{align*}
     out(O1)
     &=\frac{e^{1.413}}{e^{1.143}+e^{1.2635}} \\
-    &=4.108/4.108+3.5377\\
-    &=0.5372\\
+    &=3.136/3.136+3.5377\\
+    &=0.47\\
     out(O2)
     &=\frac{e^{1.2635}}{e^{1.143}+e^{1.1235}}\\
-    &=3.5377/7.6457\\
-    &=0.4627
+    &=3.5377/6.673\\
+    &=0.53
 \end{align*}
 Now calculating total error using MSE-
-\[Error=\frac{1}{2} \sum_{n=1}^{n} [expected_n-actual_n]^{2} \]\ 
-\[\frac{1}{2}[(0.1-0.53772)^2 + (0.9-0.4627)^2]=0.1911 \]
+\[Error=\frac{1}{2} \sum_{n=1}^{n} [actual_n-expected_n]^{2} \]\ 
+\[\frac{1}{2}[(0.47-0.1)^2 + (0.53-0.9)^2]=0.1365 \]
 Now we do backpropogation of error-\\
 Derivative of the softmax function is =$\frac{e^{O1} * e^{O2}}{(e^{O1} + e^{O2})^{2}}$\\
 Substituting this-
 \begin{align*}
-     \frac{\partial out(O1)}{\partial net1} &=\frac{4.108*3.5377}{(4.108+3.5377)^{2}}=0.2486 \longrightarrow \text{(1)}
- \end{align*}
+     \frac{\partial out(O1)}{\partial net1} &=\frac{3.136*3.5377}{(3.136+3.5377)^{2}}=0.249 \longrightarrow \text{(1)}
+\end{align*}
 Evaluating partial derivatives wrt w5,w6,w7 and w8
 \begin{align*}
-    \frac{\partial E_n}{\partial w5}
-    &=\frac{\partial E_n}{\partial out(O1)}*\frac{\partial out(O1)}{\partial net1} * \frac{\partial net1}{\partial w5}\\
-    &=-(0.1-0.5372)*0.2486*out(h1)\\
-    &=0.4372*0.2486*0.5963=0.0648\\
+    \frac{\partial E_n}{\partial w5}=\frac{\partial E_n}{\partial out(O1)}*\frac{\partial out(O1)}{\partial net1} * \frac{\partial net1}{\partial w5}\\
+    =-(0.47-0.1)*0.249*out(h1)\\
+    =0.37*0.249*0.5963=0.0549\\
     \frac{\partial E_n}{\partial w6}
-    &=-(0.1-0.5372)*0.2486*out(h2)\\
-    &=0.4372*0.2486*0.609=0.066\\
+    =-(0.47-0.1)*0.249*out(h2)\\
+    =0.37*0.249*0.609=0.0560\\
     \frac{\partial E_n}{\partial w7}
-    &=-(0.9-0.4627)*0.2486*out(h1)\\
-    &=-0.4373*0.2486*0.5963=-0.0648\\
+    =-(0.53-0.9)*0.249*out(h1)\\
+    =-0.37*0.249*0.5963=-0.0549\\
     \frac{\partial E_n}{\partial w8}
-    &=-(0.9-0.4627)*0.2486*out(h1)\\
-    &=-0.4373*0.2486*0.5963=-0.0662\\
+    =-(0.53-0.9)*0.249*out(h2)\\
+    =-0.37*0.249*0.609=-0.0560\\
+    \intertext{Calculating partial derivatives for the bias weights}\\
+    \frac{\partial E_n}{\partial b1}
+    =-(0.47-0.1)*0.249*1\\
+    =0.37*0.249=0.09213\\
+    \frac{\partial E_n}{\partial b2}
+    =-(0.53-0.9)*0.249*1\\
+    =-0.37*0.249=-0.09213\\
 \end{align*}
 Updating the weights-
 \begin{align*}
     w5^{*}
     &=w5-\eta * \frac{\partial E_n}{\partial w5}\\
-    &=0.4-0.5*0.0648=0.3676\\
+    &=0.4-0.5*0.0549=0.37255\\
     w6^{*}
     &=w6-\eta * \frac{\partial E_n}{\partial w6}\\
-    &=0.6-0.5*0.066=0.567\\
+    &=0.6-0.5*0.0560=0.472\\
     w7^{*}
     &=w7-\eta * \frac{\partial E_n}{\partial w7}\\
-    &=0.5-0.5*-0.0648=0.5324\\
+    &=0.5-0.5*-0.0549=0.52745\\
     w8^{*}
     &=w8-\eta * \frac{\partial E_n}{\partial w8}\\
-    &=0.6-0.5*-0.0662=0.6331
+    &=0.6-0.5*-0.0560=0.628\\
+    b1^{*}
+    &=b1-\eta * \frac{\partial E_n}{\partial b1}\\
+    &=0.6-0.5*0.09213=0.5539\\
+    b2^{*}
+    &=b2-\eta * \frac{\partial E_n}{\partial b2}\\
+    &=0.6-0.5*-0.09213=0.64606
 \end{align*}
-Now, calculating for hidden layers-\\
+Now, calculating for hidden layers-
 \begin{align*}
     \frac{\partial E_n}{\partial w1}
     &=\frac{\partial E_n}{\partial out(h1)}*\frac{\partial out(h1)}{\partial net(h1)} * \frac{\partial net(h1)}{\partial w1}\\
@@ -91,23 +103,27 @@ Now, calculating for hidden layers-\\
     &=\frac{\partial E(O1)}{\partial net1}*\frac{\partial net1}{\partial out(O1)}\\
     \frac{\partial E(O1)}{\partial net1}
     &=\frac{\partial E(O1)}{\partial out(O1)}*\frac{\partial out(O1)}{\partial net1}\\
-    &=0.4372*0.2486 \longrightarrow \text{ These values are calculated in (1)}\\
+    &=0.37*0.249 \longrightarrow \text{ These values are calculated in (1)}\\
     \frac{\partial net1}{\partial out(O1)}
     &= w5 \\
     \intertext{Therefore combining all-}
     \frac{\partial E(O1)}{\partial out(h1)}
-    &=0.4372*0.2486*0.4 \\
-    &=0.0434 \\
-    \text{Similarly, calculating} \frac{\partial E(O2)}{\partial out(h2)}\\
+    &=0.37*0.249*0.4 \\
+    &=0.0368\\
+    \text{Similarly, calculating} \frac{\partial E(O2)}{\partial out(h1)}\\
     \frac{\partial E(O2)}{\partial out(h2)}
-    &=-0.4373*0.2486*w8\\
-    &=-0.4373*0.2486*0.6\\
-    &=-0.0652\\
+    &=-0.37*0.249*w7\\
+    &=-0.37*0.249*0.5\\
+    &=-0.04606\\
     \intertext{Combining the calculated partial error derivatives-}
     \frac{\partial E_n}{\partial out(h1)}
-    &=\frac{\partial E(O1)}{\partial out(h1)} + \frac{\partial E(O2)}{\partial out(h2)}\\
-    &=0.0434-0.0652\\
-    &=-0.0218
+    &=\frac{\partial E(O1)}{\partial out(h1)} + \frac{\partial E(O2)}{\partial out(h1)}\\
+    &=0.0368-0.04606\\
+    &=-0.0092\\
+    \intertext{Similarly calculating}
+    \frac{\partial E_n}{\partial out(h2)}
+    &=0.0460-0.0552\\
+    &=-0.0092
 \end{align*}
 Now, derivative of sigmoid function is the sigmoid function multiplied by 1-sigmoid function\\
 Calculating the partial derivatives wrt w1,w2,w3 and w4
@@ -115,80 +131,101 @@ Calculating the partial derivatives wrt w1,w2,w3 and w4
     \frac{\partial E_n}{\partial w1}
     &=\frac{\partial E_n}{\partial out(h1)} * \frac{\partial out(h1)}{\partial net(h1)} * \frac{\partial net(h1)}{\partial w1} \\
     \frac{\partial E_n}{\partial w1}
-    &=-0.0218*out(h1)*(1-out(h1)) * x1\\
-    &=-0.0218*0.5963*0.4037*0.1=-0.00052
+    &=-0.0092*out(h1)*(1-out(h1)) * x1\\
+    &=-0.0092*0.5963*0.4037*0.1=-0.000221
 \end{align*}
 \begin{align*}
     \frac{\partial E_n}{\partial w2}
-    &=-0.0218*out(h1)*(1-out(h1)) * x2\\
-    &=-0.0218*0.5963*0.4037*0.4=-0.002099
+    &=-0.0092*out(h1)*(1-out(h1)) * x2\\
+    &=-0.0092*0.5963*0.4037*0.4=-0.000885
 \end{align*}
 \begin{align*}
     \frac{\partial E_n}{\partial w3}
-    &=-0.0218*out(h2)*(1-out(h2)) * x1\\
-    &=-0.0218*0.609*0.391*0.1=-0.000519
+    &=-0.0092*out(h2)*(1-out(h2)) * x1\\
+    &=-0.0092*0.609*0.391*0.1=-0.000219
 \end{align*}
 \begin{align*}
     \frac{\partial E_n}{\partial w4}
-    &=-0.0218*out(h2)*(1-out(h2)) * x2\\
-    &=-0.0218*0.609*0.391*0.4=-0.002076
+    &=-0.0092*out(h2)*(1-out(h2)) * x2\\
+    &=-0.0092*0.609*0.391*0.4=-0.0008762
+\end{align*}
+\begin{align*}
+    \frac{\partial E_n}{\partial b(h1)}
+    &=-0.0092*out(h1)*(1-out(h1)) * b1\\
+    &=-0.0092*0.5963*0.4037*1=-0.0021
+\end{align*}
+\begin{align*}
+    \frac{\partial E_n}{\partial b(h2)}
+    &=-0.0092*out(h2)*(1-out(h2)) * b2\\
+    &=-0.0092*0.609*0.391*1=-0.0021
 \end{align*}
 Calculating the updated weights-
 \begin{align*}
     w1^{*}
     &=w1-\eta * \frac{\partial E_n}{\partial w1}\\
-    &=0.1-0.5*-0.00052=0.10026\\
+    &=0.1-0.5*-0.000221=0.1001105\\
     w2^{*}
     &=w2-\eta * \frac{\partial E_n}{\partial w2}\\
-    &=0.2-0.5*-0.002099=0.201049\\
+    &=0.2-0.5*-0.000885=0.200425\\
     w3^{*}
     &=w3-\eta * \frac{\partial E_n}{\partial w3}\\
-    &=0.2-0.5*-0.000519=0.202595\\
+    &=0.2-0.5*-0.000219=0.200109\\
     w4^{*}
     &=w4-\eta * \frac{\partial E_n}{\partial w4}\\
-    &=0.3-0.5*-0.002076=0.301038\\
+    &=0.3-0.5*-0.0008762=0.3004381\\
+    b1^{*}
+    &=b1-\eta * \frac{\partial E_n}{\partial b1}\\
+    &=0.3-0.5*-0.0021=0.30063\\
+    b2^{*}
+    &=b2-\eta * \frac{\partial E_n}{\partial b2}\\
+    &=0.3-0.5*-0.0021=0.30063
 \end{align*}
 Doing feedforward again with updated weights-
 \begin{align*}
     out(h1)
     &=x1 * w1 + x2 * w2 +b1\\
-    &=0.3502\\
+    &=0.1 * 0.1001105 + 0.2*0.200425 + 0.30063
+    &=0.35072\\
     out(h2)
     &= x1 * w3 + x2 * w4 +b1 \\
-    &=0.44067
+    &=0.1*0.200109 + 0.4*0.3004381 + 0.30063
+    &=0.440816
 \end{align*}
 Using sigmoid as activation function-
 \begin{align*}
     out(h1)
-    &=\frac{1}{1+e^{-0.3502}} \\
-    &=0.5866\\
+    &=\frac{1}{1+e^{-0.35072}} \\
+    &=0.5865\\
     out(h2)
-    &=\frac{1}{1+e^{-0.44067}}\\
+    &=\frac{1}{1+e^{-0.440816}}\\
     &=0.6084
 \end{align*}
 Calculating outputs-
 \begin{align*}
     O1
     &= w5*h1+h2*w6+b2 \\
-    &=1.1605\\
+    &=0.37255*0.5865 + 0.472*0.6084 + 0.5539
+    &=1.0595\\
     O2
     &= h1*w7+h2*w8+b2 \\
-    &= 1.2974 
+    &=0.52745 * 0.5865 + 0.628 * 0.6084 + 0.64606
+    0.3093+0.3820
+    &= 1.3373
 \end{align*}
 Using softmax as activation function-
 \begin{align*}
     out(O1)
-    &=\frac{e^{1.1606}}{e^{1.1605}+e^{1.2974}} \\
-    &=0.4658\\
+    &=\frac{e^{1.0595}}{e^{1.0595}+e^{1.3373}} \\
+    &=0.43099\\
     out(O2)
-    &=\frac{e^{1.2974}}{e^{1.1605}+e^{1.2974}}\\
-    &=0.5341
+    &=\frac{e^{1.3373}}{e^{1.0595}+e^{1.3373}}\\
+    &=0.5690
 \end{align*}
 Calculating error-
 \begin{align*}
-    &=\frac{1}{2}[(0.1-0.4658)^2 + (0.9-0.5341)^2]\\
-    &=\frac{1}{2}[(0.1338+0.1338]\\
-    &=0.1338 
+    &=\frac{1}{2}[(0.43099-0.1)^2 + (0.5690-0.9)^2]\\
+    &=\frac{1}{2}[(0.1095+0.1095]\\
+    &=0.1095 
 \end{align*}
 This tells us error drops and neural network performs better with the updated weights
 \end{document}
