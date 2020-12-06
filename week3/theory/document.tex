@@ -59,7 +59,15 @@ H(x_1,x_2) = \begin{bmatrix}
 0 & -4
 \end{bmatrix}
 \end{align}
-Since the Hessian is definite it's a saddle point.
+Since the Hessian is indefinite ($det(H) <0$) it's a saddle point.
+
+\section{Case study}
+\subsection{}
+Such area of the error surface is a plateau. Applying small changes to the parameters at such point would not change much the value of the error function, since the surface is flat.
+Between the $100^{th}$ and $10000^{th}$ iteration, it seems that the network is stuck in a plateau. Escaping plateaus is a common problem in optimization, especially with networks with a lot of layers.
+\subsection{}
+
+
 
 \end{document}
 
