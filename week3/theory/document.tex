@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\newcommand{\hattheta}{\hat{\theta}}
+\newcommand{\hatmintexpect}{\hattheta - \mathbb{E}[\hattheta]}
+\newcommand{\expectmintheta}{\mathbb{E}[\hattheta]- \hattheta}
+\newcommand{\hatmintexpectsqr}{(\hattheta - \mathbb{E}[\hattheta])^2}
+\DeclareMathOperator{\Hessian}{Hess}
+\begin{document}
+\section{Fundamentals of Unconstrained Optimization}
+\subsection{}
+\label{1a}
+The gradient of the Rosenbrock function in $x_1$ and $x_2$ it the following
+\begin{equation}
+\frac{\partial f(x)}{\partial x_1} = 2(200x_1^{3} - 200x_1x_2+x_1-1) 
+\end{equation}
+\begin{equation}
+\frac{\partial f(x)}{\partial x_2} = 200(x_2 - x_1^2)
+\end{equation}
+Every element of Hessian matrix is defines as follow
+\begin{equation}
+ H_{ij} \equiv \frac{\partial^{2} f}{\partial x_{i} \partial x_{j} }
+\end{equation}
+Therefore we need calculate as well the second derivatives and we get
+\begin{align}
+H(x_1,x_2) = \begin{bmatrix}
+2(600x_1^2-200x_2+1) & -400x_1 \\
+-400x_1 & 200
+\end{bmatrix}
+\end{align}
+\subsection{}
+\label{1b}
+The gradient at $x^* = (1,1)$ $(\frac{\partial f(1,1)}{\partial x_1}, \frac{\partial f(1,1)}{\partial x_2})  = (0,0)$, while the Hessian matrix is
+\begin{align}
+H(x_1,x_2) = \begin{bmatrix}
+802 & -400 \\
+-400 & 200
+\end{bmatrix}
+\end{align}
+The matrix is positive definite when $x^TAx >0$ for each nonzero real vector x and this imply that $\det(A) > 0$. Therefore
+\begin{equation}
+Det(H) = 802*200-400^2 = 400 > 0
+\end{equation}
+\subsection{}
+Similarly as in \ref{1a} and \ref{1b} we calculate gradients and Hessian.
+\begin{equation}
+\frac{\partial f(x)}{\partial x_1} = 2x_1 + 8
+\end{equation}
+\begin{equation}
+\frac{\partial f(x)}{\partial x_2} = -4x_2+12
+\end{equation}
+The gradient at $x^* = (-4,3)$ $(\frac{\partial f(-4,3)}{\partial x_1}, \frac{\partial f(-4,3)}{\partial x_2})  = (0,0)$, while the Hessian matrix is
+
+
+\begin{align}
+H(x_1,x_2) = \begin{bmatrix}
+2 & 0 \\
+0 & -4
+\end{bmatrix}
+\end{align}
+Since the Hessian is definite it's a saddle point.
+
+\end{document}
+
