@@ -38,7 +38,7 @@ H(x_1,x_2) = \begin{bmatrix}
 -400 & 200
 \end{bmatrix}
 \end{align}
-The matrix is positive definite when $x^TAx >0$ for each nonzero real vector x and this imply that $\det(A) > 0$. Therefore
+The matrix is positive definite when $x^TAx >0$ for each nonzero real vector x and this imply that  $H_{1,1} > 0$ and  $\det(A) > 0$. Therefore
 \begin{equation}
 Det(H) = 802*200-400^2 = 400 > 0
 \end{equation}
@@ -50,7 +50,7 @@ Similarly as in \ref{1a} and \ref{1b} we calculate gradients and Hessian.
 \begin{equation}
 \frac{\partial f(x)}{\partial x_2} = -4x_2+12
 \end{equation}
-The gradient at $x^* = (-4,3)$ $(\frac{\partial f(-4,3)}{\partial x_1}, \frac{\partial f(-4,3)}{\partial x_2})  = (0,0)$, while the Hessian matrix is
+The gradient at $x^* = (-4,3)$ $(\frac{\partial f(-4,3)}{\partial x_1}, \frac{\partial f(-4,3)}{\partial x_2})  = (0,0)$, and (-4,3) is the only solution for gradient equal to zero. while the Hessian matrix is
 
 
 \begin{align}
@@ -66,8 +66,7 @@ Since the Hessian is indefinite ($det(H) <0$) it's a saddle point.
 Such area of the error surface is a plateau. Applying small changes to the parameters at such point would not change much the value of the error function, since the surface is flat.
 Between the $100^{th}$ and $10000^{th}$ iteration, it seems that the network is stuck in a plateau. Escaping plateaus is a common problem in optimization, especially with networks with a lot of layers.
 \subsection{}
-
+We would like to Hessian Matrix to be positive definite so that we could determine if its a local minimum
 
 
 \end{document}
-
