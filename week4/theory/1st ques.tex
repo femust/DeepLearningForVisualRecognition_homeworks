@@ -277,4 +277,32 @@ Calculating derivative-\\
     w_y&=-1-0.807=-1.807
 \end{align*}
 
+\section{Unstable Gradient Problem}
+1.
+        $\frac{dh_n}{dw_i} = \frac{dh_n}{dh_{n-1}} * \frac{dh_{n-1}}{dh_{n-2}} \ldots  \frac{dh_{i+1}}{dh_{i}} * \frac{dh_i}{dw_i}$\\\\
+2. for sigmoid derivative defined as: 
+        \begin{align*}
+            \frac{dh_n}{dw_i} = [\Pi_{k = i+1}^{n}  h_k (1 - h_k) w_k ] h_i (1 - h_i) h_{i-1}  
+        \end{align*}
+        The gradient will decay quickly. Because maximum derivative $<$ 1 \\\\
+    for relu derivative defined as when less than zero then gradients will vanish and when greater than zero: $\frac{dh_n}{dw_i} = [\Pi_{k = i+1}^{n} w_k] h_{i-1}$\\. That is why leakyReLU is used to avoid vanished gradients when less than 0.\\
+\\
+3. $Var(\hat{X}.\hat{Y}) = E(\hat{X}^2.\hat{Y}^2) - [E(\hat{X}.\hat{Y})]^2 = E(\hat{X})^2Var(\hat{Y}) + E(\hat{Y})^2Var(\hat{X}) + Var(\hat{X})Var(\hat{Y}) = Var(\hat{X})Var(\hat{Y})$\\
+as $E(\hat{X}) = 0$ and $E(\hat{Y}) = 0$\\
+\\
+So, $Var(\hat{X_1}.\hat{X_2}...\hat{X_n}) = \prod_i Var(\hat{X_i})$\\
+\\
+4. $h^{i}_{j} = \sum_k W^{i}_{j,k}h^{i-1}$\\\\
+$Var(h^{i}_{j}) = Var(\sum_k W^{i}_{j,k})Var(h^{i-1})$\\\\
+$Var(h^{i}_{j}) = n_i Var(W^{i})Var(h^{i-1})$\\\\
+since the variance is same for all weights.\\
+\\
+5.$Var(h^{i}_{j}) = n_i Var(W^{i})Var(h^{i-1})$\\\\
+$1 = n_i Var(W^{i})$ as $Var(h^{i}_{j}) = Var(h^{i-1})$\\\\
+$Var(W^{i}) = \frac{1}{n_i} $\\\\
+6. $\delta^{i} = W^{i+1}\delta^{i+1}$\\\\
+$\frac{dh_n}{dh_i} = W^{i+1}\frac{dh_n}{dh_{i+1}}$\\\\
+$Var(\frac{dh_n}{dh_i}) = Var(W^{i+1})Var(\frac{dh_n}{dh_{i+1}})$\\\\
+$Var(W^{i}) = \frac{1}{n_i} $\\\\
+
 \end{document}
