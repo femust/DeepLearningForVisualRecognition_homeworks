@@ -72,9 +72,26 @@ and for $b$
 	\end{tabular}
 \end{center}
 \subsubsection{}
-
+Batch normalization is done according to formulas
+\begin{align*}
+& \mu_B = \frac{1}{5} \sum_{i=1}^{m=5}x_i \\
+& \sigma_B^2 = \frac{1}{5} \sum_{i=1}^{m=5}(x_i - \mu_B)  \\
+& \hat{x} = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2}}
+\end{align*}
+\begin{center}
+	\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c| } 
+		\hline
+		n & $x_1$ & $x_2$ & $p_1$ & $p_2$ & L&  $dw_{11}$ & $dw_{21}$ & $dw_{22}$ & $dw_{12}$ \\
+		1 & $0.1$ & $0.4$ & $0.1$ & $0.9$ & 0.123&  0.011& -0.032 & -0.013 & 0.065 \\
+		2 & $0.8 $ & $0.2$ & $0.95$ & $0.05$ & 0.247&  -0.013 & 0.038 & 0.023& -0.116 \\
+		3 & $0.6$ & $0.5$ & $0.4$ & $0.6$ & 0.007&  0.002 & -0.006 & -0.005 & 0.023 \\
+		4 & $0.3$ & $0.9 $ & $0.75$ & $0.25$ & 0.050&  -0.005 & 0.014 & 0.012 & -0.061 \\
+		5 & $0.3$ & $0.5$ & $0.9$ & $0.1$ & 0.189 & -0.010 & 0.029 & 0.024 & -0.119 \\
+		\hline
+	\end{tabular}
+\end{center}
 
 \subsubsection{}
-As far as we understood the question the answer is yes. But this normalization will be only locally "for a batch" but not globally for "data" what may influence the learning but it strongly depends on batch data parameters since it may act like a regularization for a deep net with "online learning". 
+As far as we understood the question the answer is yes. But this normalization will be only locally "for a batch" but not globally for "data" what may influence the learning but it strongly depends on batch data parameters since it may act like a regularization for a deep net with "online learning". On the other hand if we consider batching data we can average the parameters over time at the end.
 \end{document}
 
