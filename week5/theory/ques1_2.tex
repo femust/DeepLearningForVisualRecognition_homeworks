@@ -13,9 +13,121 @@ Yash Goel
 \maketitle
 \section{Theoretical Task }
 
-\subsection{Mean square error and estimators}
+\subsection{Mean Square Error \& Estimators}
+\subsubsection{}
+For our data,
 
-\subsection{Cross entropy loss and label smoothing}
+\begin{equation*}
+    p(y|x,\theta) = \mathcal{N}(y|f(x;\theta), \sigma^2)
+\end{equation*}
+
+So, given i.i.d samples, the log likelihood is:
+
+\begin{align*}
+    \text{log } p(y|x,\theta) &= \text{log } \prod_{i} p(y_{i}|x_{i},\theta) = \sum_{i}\text{log }p(y_{i}|f(x;\theta), \sigma^2)\\
+    &= \sum_{i}\text{log }\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\Big({-\frac{(y_{i} - f(x;\theta))^{2}}{2\sigma^{2}}}\Big)\\
+    &= m\text{log }\frac{1}{\sqrt{2\pi\sigma^{2}}} - \sum_{i}\Big({\frac{(y_{i} - f(x;\theta))^{2}}{2\sigma^{2}}}\Big)
+\end{align*}
+
+Neglecting the first time, while maximizing the log likelihood we get,
+
+\begin{align*}
+    \max (LL) &= \max - \sum_{i}\Big({\frac{(y_{i} - f(x;\theta))^{2}}{2\sigma^{2}}}\Big)\\
+    &= \min \sum_{i}\Big({\frac{(y_{i} - f(x;\theta))^{2}}{2\sigma^{2}}}\Big)\\
+    & \cong \min \frac{1}{m}\sum_{i}{||y_{i} - f(x;\theta)||^2}\\
+\end{align*}
+
+which is equivalent to minimizing the MSE.
+
+\subsubsection{}
+
+Expanding the posterior over $\theta$ using Bayes theorem and avoiding the constants which don't affect the maximizing we get,
+
+\begin{align*}
+    p(\theta|y,x) &\approx p(y|\theta,x)p(\theta)
+\end{align*}
+
+which shows posterior is proportional to the likelihood and the prior on weights
+
+now taking log and taking max to get MAP,
+
+\begin{align*}
+    MAP &= \max \text{log }p(y|\theta, x) + \max \text{log }p(\theta)\\
+    &= max(LL) + \max \text{log }\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\Big({-\frac{\theta^{2}}{2\sigma^{2}}}\Big)\\
+    &\cong max(LL) + \max -\frac{1}{2}||\theta||^2\\
+    &= \min \Big(\frac{1}{m}\sum_{i}{||y_{i} - f(x;\theta)||^2} + \frac{1}{2}||\theta||^2 \Big)
+\end{align*}
+
+which is minimizingg the MSE with l2-regularization.
+
+\subsubsection{}
+
+From previous parts we know,
+
+\begin{align*}
+    MAP &= \max \text{log }p(y|\theta, x) + \max \text{log }p(\theta)\\
+\end{align*}
+
+So, when the prior on the weights in a uniform distribution then we get,
+
+\begin{align*}
+    MAP &= \max \text{log }p(y|\theta, x)\\
+\end{align*}
+
+hence, maximum likelihood estimation is equal to maximum a posteriori estimation when the prior on weights is uniform distribution.
+
+
+
+\subsection{Cross Entropy Loss \& Label Smoothing}
+
+\subsubsection{}
+
+Our model has a softmax output with cross entropy loss. Which looks like output for each class $i$ with score $s_i$,
+
+\begin{align*}
+    f(s)_{i} = \frac{e^{s_{i}}}{\sum_{i}e^{s_{i}}}
+\end{align*}
+
+Cross entropy loss applied to it we get loss as, $-\sum_{i}t_{i}log(f(s)_{i})$ where $t_i$ denotes if that sample belongs to that class $i$ depending on the training labels which is like one-got encoded vector.\\
+
+Now, we can see that our softmax output in a distribution which can be characterised with $p(y|x,\theta)$. Also the training distribution over the classes - which is our ground truth can be denoted by $q(y|x)$. The cross entropy error between the distributions gives the same form of our model loss. 
+
+\begin{align*}
+    CE(p,q) = -\sum_{y}q(y|x)log(p(y|x,\theta))
+\end{align*}
+
+Minimizing this loss is equivalent to bring the distribution closer - in our case the model distribution closer to the ground truth distribution. Hence, this model ensures we learn the ground truth distribution.
+
+\subsubsection{}
+
+So, minimizing the cross entropy loss is:
+
+\begin{align*}
+    \min CE(p,q) = \min -\sum_{y}q(y|x)log(p(y|x,\theta))
+\end{align*}
+
+taking the sum over all the samples we get,
+
+\begin{align*}
+    \min CE(p,q) &= \min -\sum_{i}\sum_{y}q(y|x)log(p(y|x,\theta))\\
+    &= \max\sum_{i}\sum_{y}q(y|x)log(p(y|x,\theta))\\
+\end{align*}
+
+therefore we can see that minimizing the cross entropy loss is equivalent to maximum log likelihood of our model.
+
+\subsubsection{}
+
+So, in the case of label smoothing we introduce noise to our target distribution and hence it is not one-hot encoded output anymore:
+\begin{align*}
+    \min CE(p,q_{new}) &= \min -\sum_{i}\sum_{y}q_{new}(y|x)log(p(y|x,\theta))\\
+    &= \min \sum_{i}\Big(-(1-\epsilon)\sum_{y}q(y|x)log(p(y|x,\theta)) -\epsilon\sum_{y}u(y|x)log(p(y|x,\theta))\Big)\\
+    &= \min \sum_{i}\Big((1-\epsilon)CE(p,q) + \epsilon CE(u,p) \Big)\\
+\end{align*}
+where $u$ is the noise distribution and $\epsilon$ is the probability.\\
+
+When the model distribution reaches close to the ground truth distribution that part of the loss reaches zero, but since it is away from the noise distribution $u$ hence that error will increase therefore it serves as a regularization. If $u$ is an uniform distribution then it becomes independent of the data.
+
+
 
 \subsection{Batch normalization}
 \subsubsection{}
