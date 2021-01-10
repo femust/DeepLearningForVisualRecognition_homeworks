@@ -18,5 +18,63 @@ Yash Goel
 \subsection{Cross entropy loss and label smoothing}
 
 \subsection{Batch normalization}
+\subsubsection{}
+\begin{align*}
+&	z_1 = w^Tx = w_1x_1 + w_3x_2 + b_1 \\
+&	z_2 = w^Tx = x_2x_1 + x_4x_2 + b_1
+\end{align*}
+For $n=1$, for example
+\begin{align*}
+& z_1 = 0.1 * 0.1 + 0.3 * 0.4 + 0.3 = 0.43  \\
+& z_2 = 0.2 * 0.1 + 0.2 * 0.4 + 0.3 = 0.40
+\end{align*}
+Softmax then gives
+\begin{align*}
+& o_1 = \frac{e^{z_1}}{e_{z_1} + e_{z_2}} \\
+& o_2 = \frac{e^{z_2}}{e_{z_1} + e_{z_2}}
+\end{align*}
+For $n=1$, for example
+\begin{align*}
+& o_1 = \frac{e^{0.43}}{e_{0.43} + e_{0.4}} = 0.5075 \\
+& o_2 = \frac{e^{0.4}}{e_{0.43} + e_{0.4}} = 0.4925
+\end{align*}
+Mean square error for $n=1$:
+\begin{align*}
+& MSE = \frac{1}{2}( p_1 - o_1)^2 + \frac{1}{2}(p_2 - o_2)^2 \\
+& MSE = \frac{1}{2}(0.1 - 0.5075 )^2 + \frac{1}{2}( 0.9 - 0.4925)^2 = 0.1660
+\end{align*}
+Gradient for MSE for $x_i$
+\begin{align*}
+\frac{\partial L}{\partial w_{ij}} = (p_i - o_i) \sigma(j)(\delta_{ij} - \sigma(i)) w_i
+\end{align*}
+So for example for $x_1$ 
+\begin{align*}
+\frac{\partial L}{\partial w_{12}} = (p_1 - o_1) (\frac{e^{z_1}}{e^{z_1} + e^{z_2}}) (1 - \frac{e^{z_1}}{e^{z_1} + e^{z_2}}) w_1
+\end{align*}
+and for $x_2$ 
+\begin{align*}
+\frac{\partial L}{\partial w_{21}} = (p_1 - o_1) (\frac{e^{z_1}}{e^{z_1} + e^{z_2}}) (\frac{-e^{z_2}}{e^{z_1} + e^{z_2}}) w_2
+\end{align*}
+and for $b$ 
+\begin{align*}
+\frac{\partial L}{\partial b} = (p_1 - o_1) (\frac{e^{z_1}}{e^{z_1} + e^{z_2}}) (\frac{-e^{z_2}}{e^{z_1} + e^{z_2}})*1
+\end{align*}
+\begin{center}
+	\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c| } 
+		\hline
+	n & $x_1$ & $x_2$ & $p_1$ & $p_2$ & L&  $dw_{11}$ & $dw_{21}$ & $dw_{22}$ & $dw_{12}$ \\
+	1 & $0.1$ & $0.4$ & $0.1$ & $0.9$ & 0.153&  0.010 & -0.030 & -0.019 & 0.093 \\
+	2 & $0.8 $ & $0.2$ & $0.95$ & $0.05$ & 0.208&  -0.012 & 0.035 & 0.023 & -0.111 \\
+	3 & $0.6$ & $0.5$ & $0.4$ & $0.6$ & 0.010&  0.002 & -0.007 & -0.005 & 0.026 \\
+	4 & $0.3$ & $0.9 $ & $0.75$ & $0.25$ & 0.057&  -0.006 & 0.0177 & 0.012 & -0.061 \\
+	5 & $0.3$ & $0.5$ & $0.9$ & $0.1$ & 0.163&  -0.010 & 0.030 & 0.021 & -0.103 \\
+		\hline
+	\end{tabular}
+\end{center}
+\subsubsection{}
 
+
+\subsubsection{}
+As far as we understood the question the answer is yes. But this normalization will be only locally "for a batch" but not globally for "data" what may influence the learning but it strongly depends on batch data parameters since it may act like a regularization for a deep net with "online learning". 
 \end{document}
+
