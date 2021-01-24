@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+
+\title{Deep learning Assignment 6}
+\author{Aysha Athar Siddiqui\\
+Andrzej Reinke\\
+Chang Chun Peng\\
+Ramaswamy Venkatachalam\\
+Yash Goel
+}
+\date{December 2020}
+\begin{document}
+\maketitle
+\section{Theory (A)-Backpropogation}
+\subsection{Computing partial derivatives with respect to weights}
+\begin{align*}
+\intertext{Error function is given by-}
+    E(o,y)&=\frac{1}{n^2}\sum_{i=1}^n \sum_{j=1}^n (O_{i,j}-y_{i,j})^2 \\
+    \intertext{Using the chain rule}
+    \frac{\partial E(O,y)}{\partial w_{s,t}}&=\frac{\partial E(O,y)}{\partial O_{i,j}}*\frac{\partial O_{i,j}}{\partial w_{s,t}} \\
+    \frac{\partial E(O,y)}{\partial w_{s,t}}&=\sum_{i=1}^n \sum_{j=1}^n \frac{\partial E(O,y)}{O_{i,j}} * \frac{\partial}{\partial w_{s,t}} (\sum_{k=-m}^m \sum_{l=-m}^m w_{k,l}*x_{i-k,j-l})
+    \intertext{For the case when k=s and l=t}
+    &=\sum_{i=1}^n \sum_{j=1}^n \frac{\partial E(O,y)}{\partial O_{i,j}} * x_{i-s,j-t}\\
+    &=rotate_{180^o} (\frac{\partial E(O,y)}{\partial O_{i,j}}) * x_{s,t}
+\end{align*}
+\end{document}
