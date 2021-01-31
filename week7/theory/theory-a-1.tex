@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+
+\title{Deep learning Assignment 6}
+\author{Aysha Athar Siddiqui\\
+Andrzej Reinke\\
+Chang Chun Peng\\
+Ramaswamy Venkatachalam\\
+Yash Goel
+}
+\date{December 2020}
+\begin{document}
+\maketitle
+\section{Theoretical Task}
+\subsection{Convolution layers with weight constraints}
+The modifications only affect derivatives with respect to weights in the convolutional layer. The units within a feature map $m$ have different inputs, but all share a common weight vector $w^{(m)}$. Error $\delta^{(m)}$ from all units within a feature map will contribute to the derivatives of the corresponding weight vector.
+The gradient loss 
+\begin{align*}
+\frac{\partial L}{\partial w_{ij}}&=\frac{\partial L}{\partial a_{j}}\frac{\partial a_{j}}{\partial w_{ji}} 
+\end{align*}
+becomes
+\begin{align*}
+\frac{\partial L}{\partial w_{i}^{(m)}}&= \sum_{j}^{}\frac{\partial L}{\partial a_{j}^{(m)}}\frac{\partial a_{j}^{(m)}}{\partial w_{i}^{(m)}} = \sum_{j}^{} \delta_j^{(m)}z_{ji}^{(m)}
+\end{align*}
+$\delta_j^{(m)} = \frac{\partial L}{\partial a_{j}^{(m)}}$ will typically be computed recursively from  the units in the following layer using
+\begin{align*}
+\delta_j^{(m)} = \frac{\partial L}{\partial a_{j}^{(m)}} =\sum_{k}^{}\frac{\partial L}{\partial a_{k}}\frac{\partial a_{k}}{\partial a_{j}}
+\end{align*}
+where sum runs over all units k to which unit j sends connections.
+If there are layer(s) preceding the convolutional layer, the standard backward propagation equations will apply. The weights in the conv layer can be treated as if they were independent parameters for the purpose of computing the gradient for the preceding layer's unit.
+\end{document}
